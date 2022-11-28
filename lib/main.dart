@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Transaction.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(MyApp());
@@ -46,16 +47,39 @@ class MyHomePage extends StatelessWidget {
                   return Card(
                     child: Row(children: [
                       Container(
+                        margin:
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.purple,
+                            width: 2,
+                          ),
+                        ),
                         child: Text(
-                          tx.amount.toString(),
+                          '\$${tx.amount}', // ---> String interpolation to write $55 dollor sign plus amount
+/*                           tx.amount.toString(),
+ */
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.purple,
+                          ),
                         ),
                       ),
-                      Column(children: [
-                        Text(tx.title),
-                        Text(
-                          tx.date.toString(),
-                        ),
-                      ])
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              tx.title,
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              DateFormat.yMMMd().format(tx
+                                  .date), // ------> formatting date using intl library "Nov 20, 2022" this type
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ])
                     ]),
                   );
                 }).toList(),
