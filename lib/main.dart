@@ -12,6 +12,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter App',
       home: MyHomePage(),
+      debugShowCheckedModeBanner:
+          true, //false it to disable debug banner at top
     );
   }
 }
@@ -25,6 +27,10 @@ class MyHomePage extends StatelessWidget {
         title: "Sunglasses", amount: 56.99, date: DateTime.now(), id: "id3"),
   ];
 
+  /* String titleInput = '';
+  String priceInput = ''; */
+  final textController = TextEditingController();
+  final priceController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,11 +48,45 @@ class MyHomePage extends StatelessWidget {
                   child: Text('CHART!'),
                 ),
               ),
+              Card(
+                elevation: 5,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    TextField(
+                      decoration: InputDecoration(labelText: 'Title'),
+                      controller: textController,
+                      /*  onChanged: ((value) {
+                          titleInput = value;
+                        }) */
+                    ),
+                    TextField(
+                      decoration: InputDecoration(labelText: 'Price'),
+                      controller: priceController,
+                      /*  onChanged: ((value) {
+                          priceInput = value;
+                        }) */
+                    ),
+                    TextButton(
+                        style: TextButton.styleFrom(
+                            foregroundColor: Colors.purple,
+                            textStyle: TextStyle(fontWeight: FontWeight.bold)),
+                        onPressed: () {
+                          print(textController.text);
+                          print(priceController.text);
+                          /* print(titleInput);
+                          print(priceInput); */
+                        },
+                        child: Text('Add Transaction')),
+                  ],
+                ),
+              ),
               Column(
                 children: transactions.map((tx) {
                   return Card(
                     child: Row(children: [
                       Container(
+                        //purple price box
                         margin:
                             EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                         decoration: BoxDecoration(
@@ -56,9 +96,9 @@ class MyHomePage extends StatelessWidget {
                           ),
                         ),
                         child: Text(
+                          //price text
                           '\$${tx.amount}', // ---> String interpolation to write $55 dollor sign plus amount
-/*                           tx.amount.toString(),
- */
+                          /*tx.amount.toString(),*/
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
@@ -67,10 +107,11 @@ class MyHomePage extends StatelessWidget {
                         ),
                       ),
                       Column(
+                          //item name and date
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              tx.title,
+                              tx.title, //item name
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
