@@ -9,8 +9,9 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 300,
-      child: ListView(
-        children: transactions.map((tx) {
+      child: ListView.builder(
+        itemCount: transactions.length,
+        itemBuilder: (context, index) {
           return Card(
             child: Row(children: [
               Container(
@@ -24,7 +25,7 @@ class TransactionList extends StatelessWidget {
                 ),
                 child: Text(
                   //price text
-                  '\$${tx.amount}', // ---> String interpolation to write $55 dollor sign plus amount
+                  '\$${transactions[index].amount.toStringAsFixed(2)}', // ---> String interpolation to write $55 dollor sign plus amount
                   /*tx.amount.toString(),*/
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -38,19 +39,19 @@ class TransactionList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      tx.title, //item name
+                      transactions[index].title, //item name
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      DateFormat.yMMMd().format(tx
+                      DateFormat.yMMMd().format(transactions[index]
                           .date), // ------> formatting date using intl library "Nov 20, 2022" this type
                       style: TextStyle(color: Colors.grey),
                     ),
                   ])
             ]),
           );
-        }).toList(),
+        },
       ),
     );
   }
