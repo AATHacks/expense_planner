@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/number_symbols_data.dart';
-import './user_transaction.dart';
 
-class NewTransaction extends StatelessWidget {
+class NewTransaction extends StatefulWidget {
   final Function addTx;
+  NewTransaction(this.addTx);
+
+  @override
+  State<NewTransaction> createState() => _NewTransactionState();
+}
+
+class _NewTransactionState extends State<NewTransaction> {
   final titleController = TextEditingController();
+
   final priceController = TextEditingController();
+
   void submitData() {
     final enteredTitle = titleController.text;
     final enteredPrice = double.parse(priceController.text);
@@ -15,13 +23,13 @@ class NewTransaction extends StatelessWidget {
     if (enteredPrice <= 0 || enteredTitle.isEmpty) {
       return;
     }
-    addTx(
+    widget.addTx(
       enteredTitle,
       enteredPrice,
     );
+    Navigator.of(context).pop();
   }
 
-  NewTransaction(this.addTx);
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -42,7 +50,7 @@ class NewTransaction extends StatelessWidget {
           ),
           TextButton(
               style: TextButton.styleFrom(
-                  foregroundColor: Colors.purple,
+                  foregroundColor: Theme.of(context).primaryColor,
                   textStyle: TextStyle(fontWeight: FontWeight.bold)),
               onPressed: submitData,
               child: Text('Add Transaction')),

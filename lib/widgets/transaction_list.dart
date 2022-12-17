@@ -19,7 +19,7 @@ class TransactionList extends StatelessWidget {
                 margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: Colors.purple,
+                    color: Theme.of(context).primaryColor,
                     width: 2,
                   ),
                 ),
@@ -30,7 +30,8 @@ class TransactionList extends StatelessWidget {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
-                    color: Colors.purple,
+                    color: Theme.of(context)
+                        .primaryColor, //get that from main.dart
                   ),
                 ),
               ),
@@ -40,13 +41,15 @@ class TransactionList extends StatelessWidget {
                   children: [
                     Text(
                       transactions[index].title, //item name
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor),
                     ),
                     Text(
                       DateFormat.yMMMd().format(transactions[index]
                           .date), // ------> formatting date using intl library "Nov 20, 2022" this type
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(color: Colors.grey[700]),
                     ),
                   ])
             ]),
