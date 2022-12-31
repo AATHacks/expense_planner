@@ -51,7 +51,8 @@ class _NewTransactionState extends State<NewTransaction> {
           TextButton(
               style: TextButton.styleFrom(
                   foregroundColor: Theme.of(context).primaryColor,
-                  textStyle: TextStyle(fontWeight: FontWeight.bold)),
+                  textStyle: TextStyle(
+                      fontWeight: FontWeight.bold, fontFamily: 'Quicksand')),
               onPressed: submitData,
               child: Text('Add Transaction')),
         ],
