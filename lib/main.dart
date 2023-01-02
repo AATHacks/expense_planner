@@ -35,11 +35,36 @@ class _MyHomePageState extends State<MyHomePage> {
   /*  final textController = TextEditingController();
   final priceController = TextEditingController(); */
   final List<Transaction> _userTransactions = [
-    // Transaction(title: "Shoes", amount: 56.99, date: DateTime.now(), id: "id1"),
-    // Transaction(
-    //     title: "T-Shirt", amount: 19.55, date: DateTime.now(), id: "id2"),
-    // Transaction(
-    //     title: "Sunglasses", amount: 56.99, date: DateTime.now(), id: "id3"),
+    Transaction(
+        title: "Shoes",
+        amount: 69.99,
+        date: DateTime.now(),
+        id: DateTime.now().toString()),
+    Transaction(
+        title: "T-Shirt",
+        amount: 19.55,
+        date: DateTime.now().subtract(Duration(days: 1)),
+        id: DateTime.now().subtract(Duration(days: 1)).toString()),
+    Transaction(
+        title: "Bag",
+        amount: 49,
+        date: DateTime.now().subtract(Duration(days: 2)),
+        id: DateTime.now().subtract(Duration(days: 2)).toString()),
+    Transaction(
+        title: "Files",
+        amount: 5.50,
+        date: DateTime.now().subtract(Duration(days: 3)),
+        id: DateTime.now().subtract(Duration(days: 3)).toString()),
+    Transaction(
+        title: "Snacks",
+        amount: 6.99,
+        date: DateTime.now().subtract(Duration(days: 4)),
+        id: DateTime.now().subtract(Duration(days: 4)).toString()),
+    Transaction(
+        title: "Flowers",
+        amount: 2,
+        date: DateTime.now().subtract(Duration(days: 5)),
+        id: DateTime.now().subtract(Duration(days: 5)).toString()),
   ];
 
   List<Transaction> get _recentTransactions {
@@ -52,11 +77,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addNewTransaction(String txTitle, double txAmount) {
+  void _addNewTransaction(
+      String txTitle, double txAmount, DateTime chosendate) {
     final newTx = Transaction(
         title: txTitle,
         amount: txAmount,
-        date: DateTime.now(),
+        date: chosendate,
         id: DateTime.now().toString());
     setState(() {
       _userTransactions.add(newTx);
@@ -72,6 +98,12 @@ class _MyHomePageState extends State<MyHomePage> {
               behavior: HitTestBehavior.opaque,
               child: NewTransaction(_addNewTransaction));
         });
+  }
+
+  void _deleteTransaction(String id) {
+    setState(() {
+      _userTransactions.removeWhere((element) => element.id == id);
+    });
   }
 
   @override
@@ -97,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // ignore: prefer_const_literals_to_create_immutables
             children: <Widget>[
               Chart(_recentTransactions),
-              TransactionList(_userTransactions),
+              TransactionList(_userTransactions, _deleteTransaction),
             ]),
       ),
       floatingActionButtonLocation:

@@ -15,7 +15,8 @@ class Chart extends StatelessWidget {
         Duration(days: index),
       );
       var totalSum = 0.0;
-      for (int i = 0; i < recentTransactions.length; i++) {
+
+      for (var i = 0; i < recentTransactions.length; i++) {
         if (recentTransactions[i].date.day == weekDay.day &&
             recentTransactions[i].date.month == weekDay.month &&
             recentTransactions[i].date.year == weekDay.year) {
@@ -40,23 +41,30 @@ class Chart extends StatelessWidget {
     return Card(
         elevation: 6,
         margin: const EdgeInsets.all(20),
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: groupedTransactionValues.map((data) {
-              return Flexible(
-                fit: FlexFit.tight,
-                child: ChartBar(
-                  (data['day'] as String),
-                  (data['amount'] as double),
-                  totalSpending == 0.0
-                      ? 0.0
-                      : (data['amount'] as double) / totalSpending,
-                ),
-              );
-            }).toList(),
-          ),
-        ));
+        child: Column(children: [
+          Text('Last 7 Days Summary',
+              style: TextStyle(
+                  fontFamily: 'Opensans',
+                  fontWeight: FontWeight.bold,
+                  color: Colors.purple)),
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: groupedTransactionValues.map((data) {
+                return Flexible(
+                  fit: FlexFit.tight,
+                  child: ChartBar(
+                    (data['day'] as String),
+                    (data['amount'] as double),
+                    totalSpending == 0.0
+                        ? 0.0
+                        : (data['amount'] as double) / totalSpending,
+                  ),
+                );
+              }).toList(),
+            ),
+          )
+        ]));
   }
 }

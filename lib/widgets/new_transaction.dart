@@ -12,22 +12,42 @@ class NewTransaction extends StatefulWidget {
 }
 
 class _NewTransactionState extends State<NewTransaction> {
-  final titleController = TextEditingController();
+  final _titleController = TextEditingController();
+  final _priceController = TextEditingController();
+  DateTime? _selectedDate;
 
-  final priceController = TextEditingController();
+  void _submitData() {
+    if (_priceController.text.isEmpty) {
+      return;
+    }
+    final enteredTitle = _titleController.text;
+    final enteredPrice = double.parse(_priceController.text);
 
-  void submitData() {
-    final enteredTitle = titleController.text;
-    final enteredPrice = double.parse(priceController.text);
-
-    if (enteredPrice <= 0 || enteredTitle.isEmpty) {
+    if (enteredPrice <= 0 || enteredTitle.isEmpty || _selectedDate == null) {
       return;
     }
     widget.addTx(
       enteredTitle,
       enteredPrice,
+      _selectedDate as DateTime,
     );
     Navigator.of(context).pop();
+  }
+
+  void _presentDatePicker() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2019),
+            lastDate: DateTime.now())
+        .then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    });
   }
 
   @override
@@ -35,28 +55,32 @@ class _NewTransactionState extends State<NewTransaction> {
     return Card(
       elevation: 5,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           TextField(
             decoration: InputDecoration(labelText: 'Title'),
-            controller: titleController,
-            onSubmitted: (value) => submitData(),
+            controller: _titleController,
+            onSubmitted: (_) => _submitData(),
           ),
           TextField(
             decoration: InputDecoration(
-              labelText: 'Price',
+              labelText: 'Amount',
             ),
-            controller: priceController,
+            controller: _priceController,
             keyboardType: TextInputType.numberWithOptions(),
-            onSubmitted: (value) => submitData(),
+            onSubmitted: (_) => _submitData(),
           ),
           Row(
             children: [
-              Text('No date choosen!'),
+              Expanded(
+                child: Text(_selectedDate == null
+                    ? 'No date choosen!'
+                    : 'Picked Date : ${DateFormat.yMd().format((_selectedDate as DateTime))}'),
+              ),
               TextButton(
-                  onPressed: submitData,
+                  onPressed: _presentDatePicker,
                   child: Text(
-                    'Choose Text',
+                    'Choose Date',
                   ),
                   style: TextButton.styleFrom(
                       foregroundColor: Theme.of(context).primaryColor,
@@ -71,7 +95,7 @@ class _NewTransactionState extends State<NewTransaction> {
                   backgroundColor: Theme.of(context).backgroundColor,
                   textStyle: TextStyle(
                       fontWeight: FontWeight.bold, fontFamily: 'Quicksand')),
-              onPressed: submitData,
+              onPressed: _submitData,
               child: Text(
                 'Add Transaction',
               )),
