@@ -1,3 +1,4 @@
+import 'package:expense_planner/widgets/chart.dart';
 import 'package:expense_planner/widgets/new_transaction.dart';
 import 'package:expense_planner/widgets/transaction_list.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print('hello world');
     return MaterialApp(
       title: 'Personal Expense',
       home: MyHomePage(),
@@ -18,8 +20,8 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.amber,
           fontFamily: 'Quicksand'),
 
-      debugShowCheckedModeBanner:
-          false, //false it to disable debug banner at top
+      //  debugShowCheckedModeBanner:
+      //     false, //false it to disable debug banner at top
     );
   }
 }
@@ -39,6 +41,16 @@ class _MyHomePageState extends State<MyHomePage> {
     // Transaction(
     //     title: "Sunglasses", amount: 56.99, date: DateTime.now(), id: "id3"),
   ];
+
+  List<Transaction> get _recentTransactions {
+    return _userTransactions.where((tx) {
+      return tx.date.isAfter(
+        DateTime.now().subtract(
+          Duration(days: 7),
+        ),
+      );
+    }).toList();
+  }
 
   void _addNewTransaction(String txTitle, double txAmount) {
     final newTx = Transaction(
@@ -84,6 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
             // ignore: prefer_const_literals_to_create_immutables
             children: <Widget>[
+              Chart(_recentTransactions),
               TransactionList(_userTransactions),
             ]),
       ),
