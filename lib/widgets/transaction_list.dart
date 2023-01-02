@@ -8,7 +8,7 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 620,
       child: transactions.isEmpty
           ? Container(
               alignment: Alignment.center,
@@ -34,6 +34,7 @@ class TransactionList extends StatelessWidget {
               // shrinkWrap: true,
               itemCount: transactions.length,
               itemBuilder: (context, index) {
+                /*  OLD LIST STYLE
                 return Card(
                   child: Row(children: [
                     Container(
@@ -76,6 +77,36 @@ class TransactionList extends StatelessWidget {
                           ),
                         ])
                   ]),
+                ); */
+                // NEW LIST STYLE
+                return Card(
+                  elevation: 5,
+                  margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      radius: 30,
+                      child: Padding(
+                        padding: EdgeInsets.all(6),
+                        child: FittedBox(
+                          child: Text('\$${transactions[index].amount}',
+                              style: TextStyle(
+                                  color: Colors.white60,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                    ),
+                    title: Text(
+                      transactions[index].title,
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor),
+                    ),
+                    subtitle: Text(
+                      DateFormat.yMMMEd().format(transactions[index].date),
+                      style: TextStyle(color: Colors.grey[700]),
+                    ),
+                  ),
                 );
               },
             ),
