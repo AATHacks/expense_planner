@@ -43,18 +43,38 @@ class _NewTransactionState extends State<NewTransaction> {
             onSubmitted: (value) => submitData(),
           ),
           TextField(
-            decoration: InputDecoration(labelText: 'Price'),
+            decoration: InputDecoration(
+              labelText: 'Price',
+            ),
             controller: priceController,
             keyboardType: TextInputType.numberWithOptions(),
             onSubmitted: (value) => submitData(),
           ),
-          TextButton(
+          Row(
+            children: [
+              Text('No date choosen!'),
+              TextButton(
+                  onPressed: submitData,
+                  child: Text(
+                    'Choose Text',
+                  ),
+                  style: TextButton.styleFrom(
+                      foregroundColor: Theme.of(context).primaryColor,
+                      textStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Quicksand')))
+            ],
+          ),
+          ElevatedButton(
               style: TextButton.styleFrom(
                   foregroundColor: Theme.of(context).primaryColor,
+                  backgroundColor: Theme.of(context).backgroundColor,
                   textStyle: TextStyle(
                       fontWeight: FontWeight.bold, fontFamily: 'Quicksand')),
               onPressed: submitData,
-              child: Text('Add Transaction')),
+              child: Text(
+                'Add Transaction',
+              )),
         ],
       ),
     );
