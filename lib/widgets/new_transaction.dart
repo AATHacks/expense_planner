@@ -1,14 +1,10 @@
-import 'dart:io';
 import '../widgets/adaptive_flat_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/number_symbols_data.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTx;
-  NewTransaction(this.addTx);
+  const NewTransaction(this.addTx, {super.key});
 
   @override
   State<NewTransaction> createState() => _NewTransactionState();
@@ -69,16 +65,16 @@ class _NewTransactionState extends State<NewTransaction> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               TextField(
-                decoration: InputDecoration(labelText: 'Title'),
+                decoration: const InputDecoration(labelText: 'Title'),
                 controller: _titleController,
                 onSubmitted: (_) => _submitData(),
               ),
               TextField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Amount',
                 ),
                 controller: _priceController,
-                keyboardType: TextInputType.numberWithOptions(),
+                keyboardType: const TextInputType.numberWithOptions(),
                 onSubmitted: (_) => _submitData(),
               ),
               Row(
@@ -95,11 +91,11 @@ class _NewTransactionState extends State<NewTransaction> {
                   style: TextButton.styleFrom(
                       foregroundColor: Theme.of(context).primaryColor,
                       backgroundColor: Theme.of(context).backgroundColor,
-                      textStyle: TextStyle(
+                      textStyle: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Quicksand')),
                   onPressed: _submitData,
-                  child: Text(
+                  child: const Text(
                     'Add Transaction',
                   )),
             ],

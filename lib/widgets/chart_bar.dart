@@ -5,14 +5,15 @@ class ChartBar extends StatelessWidget {
   final double spendingAmount;
   final double spendingPctofTotal;
 
-  ChartBar(this.label, this.spendingAmount, this.spendingPctofTotal);
+  const ChartBar(this.label, this.spendingAmount, this.spendingPctofTotal,
+      {super.key});
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (ctx, constraints) {
       return Column(
         children: [
-          Container(
+          SizedBox(
               height: constraints.maxHeight * 0.15,
               //height: 20,
               child: FittedBox(
@@ -21,7 +22,7 @@ class ChartBar extends StatelessWidget {
             //height: 4,
             height: constraints.maxHeight * 0.05,
           ),
-          Container(
+          SizedBox(
             height: constraints.maxHeight * 0.6,
             //height: 60,
             width: 10,
@@ -30,7 +31,7 @@ class ChartBar extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey, width: 1),
-                      color: Color.fromRGBO(220, 220, 220, 1),
+                      color: const Color.fromRGBO(220, 220, 220, 1),
                       borderRadius: BorderRadius.circular(10)),
                 ),
                 FractionallySizedBox(
@@ -48,7 +49,7 @@ class ChartBar extends StatelessWidget {
             //height: 4,
             height: constraints.maxHeight * 0.05,
           ),
-          Container(
+          SizedBox(
               //height: 10,
               height: constraints.maxHeight * 0.15,
               child: FittedBox(child: Text(label))),

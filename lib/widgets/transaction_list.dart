@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../models/Transaction.dart';
+import '../models/transaction_data_class.dart';
 import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
   final Function deleteTransaction;
-  TransactionList(this.transactions, this.deleteTransaction);
+  const TransactionList(this.transactions, this.deleteTransaction, {super.key});
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -19,10 +19,10 @@ class TransactionList extends StatelessWidget {
                     'No transactions added yet!',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-                  Container(
+                  SizedBox(
                       height: constraints.maxHeight * 0.6,
                       child: Image.asset(
                         'assets/images/waiting.png',
@@ -83,15 +83,15 @@ class TransactionList extends StatelessWidget {
               // NEW LIST STYLE
               return Card(
                 elevation: 5,
-                margin: EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
                 child: ListTile(
                   leading: CircleAvatar(
                     radius: 30,
                     child: Padding(
-                      padding: EdgeInsets.all(6),
+                      padding: const EdgeInsets.all(6),
                       child: FittedBox(
                         child: Text('\$${transactions[index].amount}',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Colors.white60,
                                 fontWeight: FontWeight.bold)),
                       ),
@@ -110,7 +110,7 @@ class TransactionList extends StatelessWidget {
                   ),
                   trailing: mediaQuery.size.width > 500
                       ? ElevatedButton.icon(
-                          icon: Icon(Icons.delete_forever),
+                          icon: const Icon(Icons.delete_forever),
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
                               foregroundColor: Theme.of(context).errorColor,
@@ -118,10 +118,10 @@ class TransactionList extends StatelessWidget {
                           onPressed: () {
                             deleteTransaction(transactions[index].id);
                           },
-                          label: Text('Delete'),
+                          label: const Text('Delete'),
                         )
                       : IconButton(
-                          icon: Icon(Icons.delete_forever),
+                          icon: const Icon(Icons.delete_forever),
                           color: Theme.of(context).errorColor,
                           onPressed: () {
                             deleteTransaction(transactions[index].id);

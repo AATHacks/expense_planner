@@ -4,8 +4,8 @@ import 'package:expense_planner/widgets/new_transaction.dart';
 import 'package:expense_planner/widgets/transaction_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import './models/Transaction.dart';
+
+import 'models/transaction_data_class.dart';
 
 void main() {
   /*  WidgetsFlutterBinding.ensureInitialized();
@@ -14,29 +14,35 @@ void main() {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]); */
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
+    // ignore: avoid_print
     print('hello world');
 
     return MaterialApp(
       title: 'Personal Expense',
       theme: ThemeData(
           primarySwatch: Colors.purple,
+          // ignore: deprecated_member_use
           accentColor: Colors.amber,
           fontFamily: 'Quicksand'),
 
       //  debugShowCheckedModeBanner:
       //     false, //false it to disable debug banner at top
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -53,28 +59,28 @@ class _MyHomePageState extends State<MyHomePage> {
     Transaction(
         title: "T-Shirt",
         amount: 19.55,
-        date: DateTime.now().subtract(Duration(days: 1)),
-        id: DateTime.now().subtract(Duration(days: 1)).toString()),
+        date: DateTime.now().subtract(const Duration(days: 1)),
+        id: DateTime.now().subtract(const Duration(days: 1)).toString()),
     Transaction(
         title: "Bag",
         amount: 49,
-        date: DateTime.now().subtract(Duration(days: 2)),
-        id: DateTime.now().subtract(Duration(days: 2)).toString()),
+        date: DateTime.now().subtract(const Duration(days: 2)),
+        id: DateTime.now().subtract(const Duration(days: 2)).toString()),
     Transaction(
         title: "Files",
         amount: 5.50,
-        date: DateTime.now().subtract(Duration(days: 3)),
-        id: DateTime.now().subtract(Duration(days: 3)).toString()),
+        date: DateTime.now().subtract(const Duration(days: 3)),
+        id: DateTime.now().subtract(const Duration(days: 3)).toString()),
     Transaction(
         title: "Snacks",
         amount: 6.99,
-        date: DateTime.now().subtract(Duration(days: 4)),
-        id: DateTime.now().subtract(Duration(days: 4)).toString()),
+        date: DateTime.now().subtract(const Duration(days: 4)),
+        id: DateTime.now().subtract(const Duration(days: 4)).toString()),
     Transaction(
         title: "Flowers",
         amount: 2,
-        date: DateTime.now().subtract(Duration(days: 5)),
-        id: DateTime.now().subtract(Duration(days: 5)).toString()),
+        date: DateTime.now().subtract(const Duration(days: 5)),
+        id: DateTime.now().subtract(const Duration(days: 5)).toString()),
   ];
 
   bool _showChart = false;
@@ -83,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return _userTransactions.where((tx) {
       return tx.date.isAfter(
         DateTime.now().subtract(
-          Duration(days: 7),
+          const Duration(days: 7),
         ),
       );
     }).toList();
@@ -124,14 +130,14 @@ class _MyHomePageState extends State<MyHomePage> {
     final isLandscape = mediaQuery.orientation == Orientation.landscape;
     final appbar = Platform.isIOS
         ? CupertinoNavigationBar(
-            middle: Text(
+            middle: const Text(
               'Personal Expenses',
             ),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 GestureDetector(
-                  child: Icon(CupertinoIcons.add),
+                  child: const Icon(CupertinoIcons.add),
                   onTap: () => _startAddNewTransaction(context),
                 ),
               ],
@@ -148,11 +154,11 @@ class _MyHomePageState extends State<MyHomePage> {
             actions: [
               IconButton(
                 onPressed: () => _startAddNewTransaction(context),
-                icon: Icon(Icons.add),
+                icon: const Icon(Icons.add),
               ),
             ],
           );
-    final txListWidget = Container(
+    final txListWidget = SizedBox(
         height: (mediaQuery.size.height -
                 appbar.preferredSize.height -
                 mediaQuery.padding.top) *
@@ -169,9 +175,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     Text(
                       'Show Chart',
-                      style:
-                          TextStyle(fontFamily: 'Opensans', color: Colors.grey)
-                              .merge(Theme.of(context).textTheme.titleMedium),
+                      style: const TextStyle(
+                              fontFamily: 'Opensans', color: Colors.grey)
+                          .merge(Theme.of(context).textTheme.titleMedium),
                     ),
                     Switch.adaptive(
                       activeColor: Colors.purple[300],
@@ -187,7 +193,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               if (!isLandscape)
-                Container(
+                SizedBox(
                     height: (mediaQuery.size.height -
                             appbar.preferredSize.height -
                             mediaQuery.padding.top) *
@@ -196,7 +202,7 @@ class _MyHomePageState extends State<MyHomePage> {
               if (!isLandscape) txListWidget,
               if (isLandscape)
                 _showChart
-                    ? Container(
+                    ? SizedBox(
                         height: (mediaQuery.size.height -
                                 appbar.preferredSize.height -
                                 mediaQuery.padding.top) *
@@ -209,8 +215,8 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     return Platform.isIOS
         ? CupertinoPageScaffold(
-            child: pageBody,
             navigationBar: appbar as ObstructingPreferredSizeWidget,
+            child: pageBody,
           )
         : Scaffold(
             appBar: appbar,
@@ -220,7 +226,7 @@ class _MyHomePageState extends State<MyHomePage> {
             floatingActionButton: Platform.isIOS
                 ? Container()
                 : FloatingActionButton(
-                    child: Icon(Icons.add_rounded),
+                    child: const Icon(Icons.add_rounded),
                     onPressed: () => _startAddNewTransaction(context),
                   ),
           );
