@@ -41,30 +41,41 @@ class Chart extends StatelessWidget {
     return Card(
         elevation: 6,
         margin: const EdgeInsets.all(20),
-        child: Column(children: [
-          Text('Last 7 Days Summary',
-              style: TextStyle(
-                  fontFamily: 'Opensans',
-                  fontWeight: FontWeight.bold,
-                  color: Colors.purple)),
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: groupedTransactionValues.map((data) {
-                return Flexible(
-                  fit: FlexFit.tight,
-                  child: ChartBar(
-                    (data['day'] as String),
-                    (data['amount'] as double),
-                    totalSpending == 0.0
-                        ? 0.0
-                        : (data['amount'] as double) / totalSpending,
-                  ),
-                );
-              }).toList(),
+        child: LayoutBuilder(builder: (context, constraints) {
+          return Column(children: [
+            SizedBox(
+              height: constraints.maxHeight * 0.10,
+              // ignore: prefer_const_constructors
+              child: FittedBox(
+                child: const Text('Last 7 Days Summary',
+                    style: TextStyle(
+                        fontFamily: 'Opensans',
+                        fontWeight: FontWeight.bold,
+                        color: Colors.purple)),
+              ),
             ),
-          )
-        ]));
+            SizedBox(
+              height: constraints.maxHeight * 0.90,
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: groupedTransactionValues.map((data) {
+                    return Flexible(
+                      fit: FlexFit.tight,
+                      child: ChartBar(
+                        (data['day'] as String),
+                        (data['amount'] as double),
+                        totalSpending == 0.0
+                            ? 0.0
+                            : (data['amount'] as double) / totalSpending,
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+            )
+          ]);
+        }));
   }
 }
