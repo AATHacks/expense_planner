@@ -50,6 +50,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   /*  final textController = TextEditingController();
   final priceController = TextEditingController(); */
+
+  //this is the map to store transactions
   final List<Transaction> _userTransactions = [
     Transaction(
         title: "Shoes",
@@ -83,8 +85,10 @@ class _MyHomePageState extends State<MyHomePage> {
         id: DateTime.now().subtract(const Duration(days: 5)).toString()),
   ];
 
+  //this is used for landscape mode for chart on/off button
   bool _showChart = false;
 
+  //this is used to get last 7 days user transactions
   List<Transaction> get _recentTransactions {
     return _userTransactions.where((tx) {
       return tx.date.isAfter(
@@ -95,6 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
+  //add new transaction to usertransaction map
   void _addNewTransaction(
       String txTitle, double txAmount, DateTime chosendate) {
     final newTx = Transaction(
@@ -107,6 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  //this method is used to get model bottom sheet
   void _startAddNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
         context: ctx,
@@ -118,14 +124,65 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+  //this method is used to delete transaction from map
   void _deleteTransaction(String id) {
     setState(() {
       _userTransactions.removeWhere((element) => element.id == id);
     });
   }
 
+  List<Widget> _buildLandscapeView(MediaQueryData mediaQuery,
+      PreferredSizeWidget appbar, Widget txListWidget) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            'Show Chart',
+            style: const TextStyle(fontFamily: 'Opensans', color: Colors.grey)
+                .merge(Theme.of(context).textTheme.titleMedium),
+          ),
+          Switch.adaptive(
+            activeColor: Colors.purple[300],
+            value: _showChart,
+            onChanged: (val) {
+              setState(
+                () {
+                  _showChart = val;
+                },
+              );
+            },
+          ),
+        ],
+      ),
+      _showChart
+          ? SizedBox(
+              height: (mediaQuery.size.height -
+                      appbar.preferredSize.height -
+                      mediaQuery.padding.top) *
+                  0.7,
+              child: Chart(_recentTransactions),
+            )
+          : txListWidget
+    ];
+  }
+
+  List<Widget> _buildPortraitView(MediaQueryData mediaQuery,
+      PreferredSizeWidget appbar, Widget txListWidget) {
+    return [
+      SizedBox(
+          height: (mediaQuery.size.height -
+                  appbar.preferredSize.height -
+                  mediaQuery.padding.top) *
+              0.25,
+          child: Chart(_recentTransactions)),
+      txListWidget
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
+    print('build() main');
     final mediaQuery = MediaQuery.of(context);
     final isLandscape = mediaQuery.orientation == Orientation.landscape;
     final appbar = Platform.isIOS
@@ -170,46 +227,9 @@ class _MyHomePageState extends State<MyHomePage> {
             // ignore: prefer_const_literals_to_create_immutables
             children: <Widget>[
               if (isLandscape)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      'Show Chart',
-                      style: const TextStyle(
-                              fontFamily: 'Opensans', color: Colors.grey)
-                          .merge(Theme.of(context).textTheme.titleMedium),
-                    ),
-                    Switch.adaptive(
-                      activeColor: Colors.purple[300],
-                      value: _showChart,
-                      onChanged: (val) {
-                        setState(
-                          () {
-                            _showChart = val;
-                          },
-                        );
-                      },
-                    ),
-                  ],
-                ),
+                ..._buildLandscapeView(mediaQuery, appbar, txListWidget),
               if (!isLandscape)
-                SizedBox(
-                    height: (mediaQuery.size.height -
-                            appbar.preferredSize.height -
-                            mediaQuery.padding.top) *
-                        0.25,
-                    child: Chart(_recentTransactions)),
-              if (!isLandscape) txListWidget,
-              if (isLandscape)
-                _showChart
-                    ? SizedBox(
-                        height: (mediaQuery.size.height -
-                                appbar.preferredSize.height -
-                                mediaQuery.padding.top) *
-                            0.7,
-                        child: Chart(_recentTransactions),
-                      )
-                    : txListWidget
+                ..._buildPortraitView(mediaQuery, appbar, txListWidget),
             ]),
       ),
     );
